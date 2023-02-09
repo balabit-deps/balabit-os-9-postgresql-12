@@ -1,0 +1,453 @@
+postgresql-12 (12.14-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #2006406).
+
+    + A dump/restore is not required for those running 12.X.
+
+    + Also, if you are upgrading from a version earlier than 12.10, see
+      those release notes as well please.
+
+    + libpq can leak memory contents after GSSAPI transport encryption
+      initiation fails (Jacob Champion).
+      (CVE-2022-41862)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-14.html
+
+ -- Athos Ribeiro <athos.ribeiro@canonical.com>  Thu, 09 Feb 2023 18:44:37 -0300
+
+postgresql-12 (12.13-0ubuntu0.20.04.1) focal; urgency=medium
+
+  * New upstream version (LP: #1996770).
+
+    + A dump/restore is not required for those running 12.X.
+
+    + Also, if you are upgrading from a version earlier than 12.10, see
+      those release notes as well please.
+
+    + Disallow rules named _RETURN that are not ON SELECT rules (Tom Lane).
+
+    + Fix use-after-free hazard in string comparisons. (Tom Lane)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-13.html
+
+ -- Sergio Durigan Junior <sergio.durigan@canonical.com>  Thu, 17 Nov 2022 17:07:25 -0500
+
+postgresql-12 (12.12-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #1984012).
+
+    + A dump/restore is not required for those running 12.X.
+
+    + Also, if you are upgrading from a version earlier than 12.10, see
+      those release notes as well please.
+
+    + Do not let extension scripts replace objects not already belonging
+      to the extension (Tom Lane).
+      (CVE-2022-2625)
+
+    + Fix permissions checks in CREATE INDEX (Nathan Bossart,
+      Noah Misch).
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-12.html
+
+ -- Athos Ribeiro <athos.ribeiro@canonical.com>  Thu, 11 Aug 2022 16:54:40 -0300
+
+postgresql-12 (12.11-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #1973627)
+
+    + A dump/restore is not required for those running 12.X.
+
+    + However, if you are upgrading from a version earlier than 12.10,
+      see those release notes as well.
+
+    + Confine additional operations within "security restricted operation"
+      sandboxes (Sergey Shinderuk, Noah Misch).
+
+      Autovacuum, CLUSTER, CREATE INDEX, REINDEX, REFRESH MATERIALIZED VIEW,
+      and pg_amcheck activated the "security restricted operation" protection
+      mechanism too late, or even not at all in some code paths. A user having
+      permission to create non-temporary objects within a database could
+      define an object that would execute arbitrary SQL code with superuser
+      permissions the next time that autovacuum processed the object, or that
+      some superuser ran one of the affected commands against it.
+
+      The PostgreSQL Project thanks Alexander Lakhin for reporting this
+      problem.
+      (CVE-2022-1552)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-11.html
+
+ -- Sergio Durigan Junior <sergio.durigan@canonical.com>  Tue, 17 May 2022 22:10:51 -0400
+
+postgresql-12 (12.10-0ubuntu0.20.04.1) focal; urgency=medium
+
+  * New upstream version (LP: #1961127).
+
+    + A dump/restore is not required for those running 12.X.
+
+    + However, if you have applied REINDEX CONCURRENTLY to a TOAST table's
+      index, or observe failures to access TOAST datums, there has been a
+      fix for this problem. Any existing corrupted indexes can be repaired
+      by reindexing again.
+
+    + Also, if you are upgrading from a version earlier than 12.9, see
+      those release notes as well please.
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-10.html
+
+ -- Athos Ribeiro <athos.ribeiro@canonical.com>  Wed, 23 Feb 2022 08:36:18 -0300
+
+postgresql-12 (12.9-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #1950268).
+
+    + Make the server reject extraneous data after an SSL or GSS
+      encryption handshake
+      CVE-2021-23214
+
+    + Make libpq reject extraneous data after an SSL or GSS
+      encryption handshake
+      CVE-2021-23222
+
+    + A dump/restore is not required for those running 12.X.
+
+    + However, note that installations using physical replication should
+      update standby servers before the primary server, details in the
+      release notes linked below.
+
+    + Also, several bugs have been found that may have resulted in corrupted
+      indexes, explained in detail in the release notes linked below. If any
+      of those cases apply to you, it's recommended to reindex
+      possibly-affected indexes after updating.
+
+    + Also, if you are upgrading from a version earlier than 12.6,
+      see those release notes as well please.
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-9.html
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 09 Nov 2021 09:39:52 +0100
+
+postgresql-12 (12.8-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #1939396).
+
+    + Disallow SSL renegotiation more completely (Michael Paquier)
+
+      SSL renegotiation has been disabled for some time, but the server
+      would still cooperate with a client-initiated renegotiation request.
+      A maliciously crafted renegotiation request could result in a server
+      crash (see OpenSSL issue CVE-2021-3449).  Disable the feature
+      altogether on OpenSSL versions that permit doing so, which are
+      1.1.0h and newer.
+      (CVE-2021-3449)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-8.html
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 10 Aug 2021 14:18:34 +0200
+
+postgresql-12 (12.7-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #1928773).
+
+    + Prevent integer overflows in array subscripting calculations (Tom Lane)
+
+      The array code previously did not complain about cases where an array's
+      lower bound plus length overflows an integer.  This resulted in later
+      entries in the array becoming inaccessible (since their subscripts could
+      not be written as integers), but more importantly it confused subsequent
+      assignment operations.  This could lead to memory overwrites, with
+      ensuing crashes or unwanted data modifications. (CVE-2021-32027)
+
+    + Fix mishandling of junk columns in INSERT ... ON CONFLICT ... UPDATE
+      target lists (Tom Lane)
+
+      If the UPDATE list contains any multi-column sub-selects (which give
+      rise to junk columns in addition to the results proper), the UPDATE path
+      would end up storing tuples that include the values of the extra junk
+      columns. That's fairly harmless in the short run, but if new columns are
+      added to the table then the values would become accessible, possibly
+      leading to malfunctions if they don't match the datatypes of the added
+      columns.
+
+      In addition, in versions supporting cross-partition updates, a
+      cross-partition update triggered by such a case had the reverse problem:
+      the junk columns were removed from the target list, typically causing an
+      immediate crash due to malfunction of the multi-column sub-select
+      mechanism. (CVE-2021-32028)
+
+    + Fix possibly-incorrect computation of UPDATE ... RETURNING outputs for
+      joined cross-partition updates (Amit Langote, Etsuro Fujita)
+
+      If an UPDATE for a partitioned table caused a row to be moved to another
+      partition with a physically different row type (for example, one with a
+      different set of dropped columns), computation of RETURNING results for
+      that row could produce errors or wrong answers.  No error is observed
+      unless the UPDATE involves other tables being joined to the target
+      table. (CVE-2021-32029)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/12/release-12-7.html
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 18 May 2021 12:13:14 +0200
+
+postgresql-12 (12.6-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version (LP: #1915254)
+    + Fix incorrect detection of concurrent page splits while inserting
+      into a GiST index (Heikki Linnakangas)
+
+      Concurrent insertions could lead to a corrupt index with entries
+      placed in the wrong pages.  It's recommended to reindex any GiST
+      index that's been subject to concurrent insertions.
+
+    + Fix CREATE INDEX CONCURRENTLY to wait for concurrent prepared
+      transactions (Andrey Borodin)
+
+      At the point where CREATE INDEX CONCURRENTLY waits for all concurrent
+      transactions to complete so that it can see rows they inserted, it
+      must also wait for all prepared transactions to complete, for the
+      same reason.  Its failure to do so meant that rows inserted by
+      prepared transactions might be omitted from the new index, causing
+      queries relying on the index to miss such rows. In installations that
+      have enabled prepared transactions (max_prepared_transactions > 0),
+      it's recommended to reindex any concurrently-built indexes in case
+      this problem occurred when they were built.
+
+    + Fix information leakage in constraint-violation error messages
+      (Heikki Linnakangas)
+
+      If an UPDATE command attempts to move a row to a different partition
+      but finds that it violates some constraint on the new partition, and
+      the columns in that partition are in different physical positions
+      than in the parent table, the error message could reveal the contents
+      of columns that the user does not have SELECT privilege on.
+      (CVE-2021-3393)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/10/static/release-12-6.html
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 10 Feb 2021 11:47:33 +0100
+
+postgresql-12 (12.5-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream version.
+    + Block DECLARE CURSOR ... WITH HOLD and firing of deferred triggers
+      within index expressions and materialized view queries (Noah Misch)
+
+      This is essentially a leak in the security restricted operation sandbox
+      mechanism.  An attacker having permission to create non-temporary SQL
+      objects could parlay this leak to execute arbitrary SQL code as a
+      superuser.
+
+      The PostgreSQL Project thanks Etienne Stalmans for reporting this
+      problem. (CVE-2020-25695)
+
+    + Fix usage of complex connection-string parameters in pg_dump,
+      pg_restore, clusterdb, reindexdb, and vacuumdb (Tom Lane)
+
+      The -d parameter of pg_dump and pg_restore, or the --maintenance-db
+      parameter of the other programs mentioned, can be a connection string
+      containing multiple connection parameters rather than just a database
+      name.  In cases where these programs need to initiate additional
+      connections, such as parallel processing or processing of multiple
+      databases, the connection string was forgotten and just the basic
+      connection parameters (database name, host, port, and username) were
+      used for the additional connections.  This could lead to connection
+      failures if the connection string included any other essential
+      information, such as non-default SSL or GSS parameters. Worse, the
+      connection might succeed but not be encrypted as intended, or be
+      vulnerable to man-in-the-middle attacks that the intended connection
+      parameters would have prevented. (CVE-2020-25694)
+
+    + When psql's \connect command re-uses connection parameters, ensure that
+      all non-overridden parameters from a previous connection string are
+      re-used (Tom Lane)
+
+      This avoids cases where reconnection might fail due to omission of
+      relevant parameters, such as non-default SSL or GSS options. Worse, the
+      reconnection might succeed but not be encrypted as intended, or be
+      vulnerable to man-in-the-middle attacks that the intended connection
+      parameters would have prevented. This is largely the same problem as
+      just cited for pg_dump et al, although psql's behavior is more complex
+      since the user may intentionally override some connection parameters.
+      (CVE-2020-25694)
+
+    + Prevent psql's \gset command from modifying specially-treated variables
+      (Noah Misch)
+
+      \gset without a prefix would overwrite whatever variables the server
+      told it to.  Thus, a compromised server could set specially-treated
+      variables such as PROMPT1, giving the ability to execute arbitrary shell
+      code in the user's session.
+
+      The PostgreSQL Project thanks Nick Cleaton for reporting this problem.
+      (CVE-2020-25696)
+
+    + Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/10/static/release-12-5.html
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 12 Nov 2020 12:13:24 +0100
+
+postgresql-12 (12.4-0ubuntu0.20.04.1) focal-security; urgency=medium
+
+  * New upstream release (LP: #1892335).
+    - Set a secure search_path in logical replication walsenders and apply
+      workers (Noah Misch)
+
+      A malicious user of either the publisher or subscriber database could
+      potentially cause execution of arbitrary SQL code by the role running
+      replication, which is often a superuser.  Some of the risks here are
+      equivalent to those described in CVE-2018-1058, and are mitigated in
+      this patch by ensuring that the replication sender and receiver execute
+      with empty search_path settings. (As with CVE-2018-1058, that change
+      might cause problems for under-qualified names used in replicated
+      tables' DDL.)  Other risks are inherent in replicating objects that
+      belong to untrusted roles; the most we can do is document that there is
+      a hazard to consider.
+      CVE-2020-14349
+
+    - Make contrib modules' installation scripts more secure (Tom Lane)
+
+      Attacks similar to those described in CVE-2018-1058 could be carried out
+      against an extension installation script, if the attacker can create
+      objects in either the extension's target schema or the schema of some
+      prerequisite extension.  Since extensions often require superuser
+      privilege to install, this can open a path to obtaining superuser
+      privilege.  To mitigate this risk, be more careful about the search_path
+      used to run an installation script; disable check_function_bodies within
+      the script; and fix catalog-adjustment queries used in some contrib
+      modules to ensure they are secure.  Also provide documentation to help
+      third-party extension authors make their installation scripts secure.
+      This is not a complete solution; extensions that depend on other
+      extensions can still be at risk if installed carelessly.
+      CVE-2020-14350
+
+    - Details about these and many further changes can be found at:
+      https://www.postgresql.org/docs/10/static/release-12-3.html
+      https://www.postgresql.org/docs/10/static/release-12-4.htm
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 20 Aug 2020 11:29:14 +0200
+
+postgresql-12 (12.2-4) unstable; urgency=medium
+
+  * Disable llvm on ppc64 and s390x, segfaulting with llvm 10.
+    https://bugs.launchpad.net/ubuntu/+source/llvm-toolchain-10/+bug/1867173
+  * On error, show install.log as well.
+
+ -- Christoph Berg <myon@debian.org>  Fri, 27 Mar 2020 10:24:55 +0100
+
+postgresql-12 (12.2-3) unstable; urgency=medium
+
+  * Move to llvm 10.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 25 Mar 2020 11:22:25 +0100
+
+postgresql-12 (12.2-2) unstable; urgency=medium
+
+  * Add minimum version to server-dev -> client dependency where pg_config was
+    moved. Spotted by Sandro Santilli, thanks!
+
+ -- Christoph Berg <myon@debian.org>  Wed, 19 Feb 2020 11:53:47 +0100
+
+postgresql-12 (12.2-1) unstable; urgency=medium
+
+  * New upstream version.
+    + Add missing permissions checks for ALTER ... DEPENDS ON EXTENSION.
+
+      Marking an object as dependent on an extension did not have any
+      privilege check whatsoever.  This oversight allowed any user to mark
+      routines, triggers, materialized views, or indexes as droppable by
+      anyone able to drop an extension.  Require that the calling user own the
+      specified object (and hence have privilege to drop it). (CVE-2020-1720)
+
+  * Disable llvm on riscv64 again, it's broken.
+  * Set PROVE_FLAGS="--verbose".
+
+ -- Christoph Berg <myon@debian.org>  Thu, 09 Jan 2020 18:52:09 +0100
+
+postgresql-12 (12.1-2) unstable; urgency=medium
+
+  * Move pg_config and pgxs to postgresql-client package to be able to test
+    extension packages using only their native dependencies. (Closes: #944457)
+  * Enable llvm on riscv64.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 08 Jan 2020 16:14:44 +0100
+
+postgresql-12 (12.1-1) unstable; urgency=medium
+
+  * New upstream version.
+  * Drop obsolete python-dev build-dependency. (Closes: #943214)
+
+ -- Christoph Berg <myon@debian.org>  Tue, 12 Nov 2019 11:33:45 +0100
+
+postgresql-12 (12.0-2) unstable; urgency=medium
+
+  * Put back pqsignal() as an exported libpq symbol. Fixes regressions in
+    pg-repack and repmgr, and PostgreSQL server versions 9.2 and earlier.
+
+ -- Christoph Berg <myon@debian.org>  Fri, 11 Oct 2019 09:38:36 +0200
+
+postgresql-12 (12.0-1) unstable; urgency=medium
+
+  * First PostgreSQL 12 release.
+  * Disable jit on powerpc again, it's still broken.
+  * Disable jit on riscv64, llvm-9 not yet available.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 02 Oct 2019 14:45:00 +0200
+
+postgresql-12 (12~rc1-1) unstable; urgency=medium
+
+  * New upstream rc version.
+  * debian/tests/installcheck: Disable llvm bitcode compilation, not needed.
+  * Revert back to libecpg6, the DECLARE STATEMENT feature was reverted.
+  * Use llvm 9; enable jit on powerpc.
+
+ -- Christoph Berg <myon@debian.org>  Fri, 13 Sep 2019 10:35:58 +0200
+
+postgresql-12 (12~beta4-1) experimental; urgency=medium
+
+  * New upstream beta version.
+  * Drop plpython(2) package; python 2 is EOL.
+  * Move plperl bitcode files to plperl package.
+  * Move plpython mo files to plpython3 package.
+  * rules: Remove stamp files logic.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 11 Sep 2019 10:12:12 +0200
+
+postgresql-12 (12~beta3-1) experimental; urgency=medium
+
+  * New upstream beta version.
+  * debian/tests: Also run regression tests.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 07 Aug 2019 11:04:52 +0200
+
+postgresql-12 (12~beta2-1) experimental; urgency=medium
+
+  * New upstream beta version.
+  * debian/pycompat: Obsolete, remove.
+  * debian/patches: Add missing patch documentation.
+  * debian/rules: Use /usr/share/dpkg/pkg-info.mk and vendor.mk for
+    --with-extra-version.
+  * debian/copyright: sha2 moved to src/common, remove fortuna and random.
+  * debian/*.symbols: Add Build-Depends-Package information.
+  * postgresql-plpython3-12: Remove empty directory
+    /usr/lib/postgresql/12/lib/pgxs/src/pl/plpython.
+
+ -- Christoph Berg <myon@debian.org>  Tue, 18 Jun 2019 11:00:03 +0200
+
+postgresql-12 (12~beta1-1) experimental; urgency=medium
+
+  * New major upstream version 12; packaging based on postgresql-11.
+  * libpq5.symbols: Remove pqsignal.
+  * Drop patch 64-pg_upgrade-sockdir, handled via pg_upgrade --socketdir now.
+  * Bump to libecpg7.
+
+ -- Christoph Berg <myon@debian.org>  Tue, 21 May 2019 09:30:47 +0200
