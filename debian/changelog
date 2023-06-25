@@ -1,3 +1,9 @@
+postgresql-12 (12.15-0ubuntu0.20.04.1bb1) jammy; urgency=medium
+
+  * debian: bump clvm/llvm to version 14 in jammy
+
+ -- Balabit Platform Team <devnull@dev.null>  Sun, 25 Jun 2023 19:04:24 +0200
+
 postgresql-12 (12.15-0ubuntu0.20.04.1) focal-security; urgency=medium
 
   * New upstream version (LP: #2019214).
